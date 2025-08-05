@@ -11,7 +11,7 @@ models:
     mpk: "bc59459fc1a03ec26049d01854bbb095313f30f4070138a02b33ee653f3bee28_482171310080_d5607439-fe26-5b91-a0c3-4e66642aaea6"
 
 containers:
-  - name: "qwen3-coder-480b-tp4"
+  - name: "qwen3-coder-480b"
     image: ""
     args: [
       "--runtime", "nvidia",
@@ -19,7 +19,7 @@ containers:
       "--ipc", "host",
       "vllm/vllm-openai:v0.10.0",
       "--model", "/tinfoil/mpk/mpk-bc59459fc1a03ec26049d01854bbb095313f30f4070138a02b33ee653f3bee28",
-      "--tensor-parallel-size", "4",
+      "--tensor-parallel-size", "8",
       "--gpu-memory-utilization", "0.95",
       "--enable-auto-tool-choice",
       "--tool-call-parser", "qwen3_coder",
