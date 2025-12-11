@@ -1,14 +1,13 @@
-shim-version: v0.1.9@sha256:410510c9e8e4c7489dd201fede302dee8455075ca28f4f0abbf84bded943b8f1
-cvm-version: 0.4.1
+shim-version: v0.2.15@sha256:5ca748b384b78b7e686b57ca66d9b3c552038ebab2ce60305004f76e573a8458
+cvm-version: 0.4.16
 cpus: 32
 memory: 524288
 gpus: full
-vllm: false
 
 models:
   - name: "qwen3-coder-480b"
-    repo: "Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8@d27784dcbed3a08de523dd74fadff2deb6fedc6b"
-    mpk: "bc59459fc1a03ec26049d01854bbb095313f30f4070138a02b33ee653f3bee28_482171310080_d5607439-fe26-5b91-a0c3-4e66642aaea6"
+    repo: "Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8@003f183a92fbe5b9a8325aaa8b2ae797c91dd90f"
+    mpk: "81993809d5510f60b216a144a27d4a2ca1df6b5ddaa6b7f0096a040bb5b1bf07_482171310080_b7089f0d-7aa8-508f-a7f2-10d8bf7001c8"
 
 containers:
   - name: "qwen3-coder-480b"
@@ -17,12 +16,14 @@ containers:
       "--runtime", "nvidia",
       "--gpus", "all",
       "--ipc", "host",
-      "vllm/vllm-openai:v0.10.0",
-      "--model", "/tinfoil/mpk/mpk-bc59459fc1a03ec26049d01854bbb095313f30f4070138a02b33ee653f3bee28",
-      "--tensor-parallel-size", "8",
-      "--gpu-memory-utilization", "0.95",
+      "vllm/vllm-openai:v0.12.0@sha256:6766ce0c459e24b76f3e9ba14ffc0442131ef4248c904efdcbf0d89e38be01fe",
+      "--model", "/tinfoil/mpk/mpk-81993809d5510f60b216a144a27d4a2ca1df6b5ddaa6b7f0096a040bb5b1bf07",
+      "--enable-expert-parallel",
+      "--data-parallel-size", "8",
+      "--max-model-len", "131072",
       "--enable-auto-tool-choice",
       "--tool-call-parser", "qwen3_coder",
+      "--chat-template", "examples/tool_chat_template_qwen3coder.jinja",
       "--served-model-name", "qwen3-coder-480b",
       "--port", "8001"
     ]
@@ -30,13 +31,10 @@ containers:
 shim:
   listen-port: 443
   upstream-port: 8001
-  publish-attestation: false
+  publish-attestation: true
   tls-challenge: dns
   control-plane: https://api.tinfoil.sh
   paths:
     - /v1/chat/completions
     - /metrics
-  origins:
-    - https://tinfoil.sh
-    - https://chat.tinfoil.sh
-    - http://localhost:3000
+    - /health
