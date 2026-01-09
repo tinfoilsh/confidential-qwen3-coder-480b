@@ -16,7 +16,7 @@ containers:
       "--runtime", "nvidia",
       "--gpus", "all",
       "--ipc", "host",
-      "vllm/vllm-openai:v0.12.0@sha256:6766ce0c459e24b76f3e9ba14ffc0442131ef4248c904efdcbf0d89e38be01fe",
+      "vllm/vllm-openai:v0.13.0@sha256:d623253f2ba246378421c9642e20885e65257f38418ff26d48c81aea1702521b",
       "--model", "/tinfoil/mpk/mpk-81993809d5510f60b216a144a27d4a2ca1df6b5ddaa6b7f0096a040bb5b1bf07",
       "--enable-expert-parallel",
       "--data-parallel-size", "8",
